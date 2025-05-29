@@ -1,66 +1,53 @@
-// Jenkinsfile at root of your repo
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Build Docker Images') {
-            steps {
-                sh 'docker-compose build'
-            }
-        }
-
-        stage('Lint Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm install'
-                    sh 'npm run lint'
-                }
-            }
-        }
-
-        stage('Test Frontend') {
-            steps {
-                dir('frontend') {
-                    sh 'npm run test'
-                }
-            }
-        }
-
-        stage('Lint Backend') {
-            steps {
-                dir('backend') {
-                    sh 'npm install'
-                    sh 'npm run lint'
-                }
-            }
-        }
-
-        stage('Test Backend') {
-            steps {
-                dir('backend') {
-                    sh 'npm run test'
-                }
-            }
-        }
-
-        stage('Build Verification') {
-            steps {
-                sh 'docker-compose up -d'
-                sh 'docker ps'
-            }
-        }
+  stages {
+    stage('Checkout') {
+      steps {
+        git branch: 'main', url: 'https://github.com/YOUR_USERNAME/YOUR_REPO.git'
+      }
     }
-
-    post {
-        always {
-            echo 'Cleaning up containers...'
-            sh 'docker-compose down'
+    stage('Install Frontend') {
+      steps {
+        dir('frontend') {
+          sh 'npm install'
         }
+      }
     }
+    stage('Install Backend') {
+      steps {
+        dir('backend') {
+          sh 'npm install'
+        }
+      }
+    }
+    stage('Lint Frontend') {
+      steps {
+        dir('frontend') {
+          sh 'npm run lint'
+        }
+      }
+    }
+    stage('Lint Backend') {
+      steps {
+        dir('backend') {
+          sh 'npm run lint'
+        }
+      }
+    }
+    stage('Test Frontend') {
+      steps {
+        dir('frontend') {
+          sh 'npm test'
+        }
+      }
+    }
+    stage('Test Backend') {
+      steps {
+        dir('backend') {
+          sh 'npm test'
+        }
+      }
+    }
+  }
 }
