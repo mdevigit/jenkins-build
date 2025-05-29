@@ -1,13 +1,12 @@
+version: '3.8'
 services:
   frontend:
-    build: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-
+    build:
+      context: ./frontend
+    command: node index.js
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     ports:
       - "5000:5000"
-
+    command: node server.js
