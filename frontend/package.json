@@ -1,0 +1,12 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint .",
+    "test": "echo \"No frontend tests\" && exit 0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
+  }
+}
